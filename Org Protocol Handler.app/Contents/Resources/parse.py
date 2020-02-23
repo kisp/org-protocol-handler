@@ -100,10 +100,9 @@ def main():
         sys.exit(1)
 
     url = sys.argv[1]
-    raw_url = six.moves.urllib.parse.unquote(url)
     config = read_config()
     cmd = emacs_client_command(config)
-    cmd.append(raw_url)
+    cmd.append(url)
     subprocess.check_output(cmd)
     print(get_title(url, is_old_style_link(url)))
 
