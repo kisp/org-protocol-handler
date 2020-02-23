@@ -95,15 +95,24 @@ def get_title(url, is_old_style=True):
     return get_new_style_title(url)
 
 
+def write_to_file(file_name, text):
+    handle = open(file_name, "wt")
+    handle.write(text)
+    handle.close()
+
+
 def main():
     if len(sys.argv) < 2:
         sys.exit(1)
 
     url = sys.argv[1]
+    write_to_file("/tmp/org_proto_url", url)
     raw_url = six.moves.urllib.parse.unquote(url)
+    write_to_file("/tmp/org_proto_raw_url", raw_url)
     config = read_config()
     cmd = emacs_client_command(config)
     cmd.append(raw_url)
+    write_to_file("/tmp/org_proto_cmd", "|".join(cmd))
     subprocess.check_output(cmd)
     print(get_title(url, is_old_style_link(url)))
 
